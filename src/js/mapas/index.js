@@ -1,33 +1,55 @@
-import L from "leaflet"
+import { Dropdown } from "bootstrap";
+import Swal from "sweetalert2";
+import { validarFormulario, Toast, confirmacion } from "../funciones";
+import L from "leaflet";
+const butonActualizar = document.getElementById("actualizar");
 
 const map = L.map('map', {
-    center: [15.525158, -90.32959],
-    zoom: 7,
+    center: [15.52, -90.32],
+    zoom: 5,
+    maxZoom: 15,
+    minZoom: 1,
 })
-
-const mapLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
+const mapLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">Colaboradores de OpenStreetMap</a>'
-}).addTo(map)
-
-const markerLayer = L.layerGroup(); 
-
-const icon = L.icon({
-    iconUrl : './images/cit.png',
-    iconSize : [35, 35]
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 })
 
-const marker = L.marker([15.525158, -90.32959],{
-    icon
-}).addTo(markerLayer)
+const carreteraLayer = L.tileLayer('https://tile.waymarkedtrails.org/hiking/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Map style: &copy; <a href="https://waymarkedtrails.org">waymarkedtrails.org</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
 
-var tooltip = L.tooltip()
-    .setLatLng([15.525158, -90.32959])
-    .setContent('¡Hola mundo!<br>Este es el CIT.')
-    .addTo(map);
+const markerLayer = L.layerGroup();
+const icono = L.icon({
+    iconUrl: './images/cit.png',
+    iconSize: [35, 35]
+})
 
-L.circle([15.525158, -90.32959], { radius: 5000 }).addTo(map); // Agregamos un círculo en las mismas coordenadas que el marcador
+L.circle([15.52, -90.32], { radius: 5000 }).addTo(markerLayer);
+const popup = L.popup()
+    .setLatLng([15.52, -90.32])
+    .setContent('<p>Hello world!</p>')
+
+
+var latlngs = [
+    [45.51, -122.68],
+    [37.77, -122.43],
+    [34.04, -118.2]
+];
+
+var polyline = L.polyline(latlngs, { color: 'red' }).addTo(markerLayer);
+
+
+mapLayer.addTo(map)
+carreteraLayer.addTo(map)
 markerLayer.addTo(map)
+
+map.on('click', (e) => {
+    console.log(e);
+    alert('diste click sobre el mapa')
+})
+
 
 
 
@@ -56,7 +78,9 @@ const buscar = async () => {
 
                     const popup = L.popup()
                         .setLatLng([latitud, longitud])
-                        .setContent(`<p>Nombre: ${registro.map_nombre}</p>`);
+                        .setContent(`<p>Nombre: ${registro.map_nombre}</p>
+                                    <p>Latitud: ${latitud}</p>
+                                    <p>Longitud: ${longitud}</p>`).openOn(map);
 
                     marcador.bindPopup(popup);
                     marcador.addTo(markerLayer);
@@ -74,29 +98,18 @@ const buscar = async () => {
     }
 }
 
+butonActualizar.addEventListener("click", () => {
+    Toast.fire({
+        title: 'Actualizando datos...',
+        icon: 'info',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
+
+    buscar();
+});
+
 
 buscar();
-    
-    
-    
-    // const map = L.map('map', {
-    //     center: [15.52, -90.32],
-    //     zoom: 10,  
-    // })
-    // const mapLayer = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',{
-    //     maxZoom: 19,
-    //     attribution: '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    // }).addTo(map)
-    
-    // var popup = L.popup()
-    // .setLatLng([15.525158, -90.32959])
-    // .setContent('<p>Hello world!<br />This is a nice popup.</p>')
-    // marker.bindPopup(popup)
-    // const coordenadas = [
-    //     [14.1, -90.5],
-    //     [14.3, -90.8],
-    //     [14.6, -90.9],
-    //     [15.0, -90.6],
-    //     [15.3, -90.7]
-    //   ];
-// var polygon = L.polygon(coordenadas, {color: 'red'}).addTo(map);
