@@ -27,7 +27,7 @@
                         <a class="nav-link" aria-current="page" href="/mapa_leaflet/"><i class="bi bi-house-fill me-2"></i>Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/mapa_leaflet/mapa"><i class="bi bi-globe-americas me-2"></i>Mapa</a>
+                        <a class="nav-link" aria-current="page" href="/mapa_leaflet/mapas"><i class="bi bi-globe-americas me-2"></i>Mapa</a>
                     </li>
                 </ul> 
                 <div class="col-lg-1 d-grid mb-lg-0 mb-2">

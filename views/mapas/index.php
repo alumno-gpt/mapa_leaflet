@@ -3,4 +3,4 @@
     <div class="col-lg-11 p-3 border rounded" id="map" style="height: 60vh;min-height:auto">
     </div>
 </div>
-<script src="<?= asset('./build/js/mapa/index.js')?>"></script>
+<script src="<?= asset('./build/js/mapas/index.js')?>"></script>
